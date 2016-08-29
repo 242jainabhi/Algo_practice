@@ -1,4 +1,4 @@
-Adj={}
+# Adj={}
 
 def add_edge(Adj,u,v): #Adj is Adj list of graph
     if u not in Adj:
@@ -8,6 +8,10 @@ def add_edge(Adj,u,v): #Adj is Adj list of graph
 
 def remove_edge(Adj,u,v):
     Adj[u].remove(v)
+
+def printGraph(Adj):
+    for i in Adj:
+        print(i,Adj[i],sep='-->')
 
 def BFS(Adj,S):
     color = {}
@@ -30,3 +34,6 @@ def BFS(Adj,S):
     print(distance)
     print(parent)
     print(color)
+
+def DFS():
+    pass
