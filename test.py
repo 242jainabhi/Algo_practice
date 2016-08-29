@@ -1,5 +1,5 @@
 import Graph
-import InsertionSort
+import Insertion_Sort
 Adj={}
 
 # def add_edge(Adj,u,v): #Adj is Adj list of graph
