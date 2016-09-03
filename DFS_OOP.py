@@ -3,7 +3,6 @@ class Graph:
         self.n = n
         self.m = m
         self.Adj = {}
-        self.Trans_Adj = {}
         self.time = 0
         self.color = {}
         self.distance = {}
@@ -27,20 +26,6 @@ class Graph:
         """Prints the Adjacency List representation of the graph"""
         for i in self.Adj:
             print(i,self.Adj[i],sep='-->')
-
-    def printTransposeGraph(self):
-        """Prints the Transpose of Adjacency List representation of the graph"""
-        for i in self.Trans_Adj:
-            print(i,self.Trans_Adj[i],sep='-->')
-
-    def Transpose(self):
-        """Transpose of a Graph (Adjacency list Representation)"""
-        for i in self.Adj:
-            self.Trans_Adj[i]=[]
-
-        for i in self.Adj:
-            for j in self.Adj[i]:
-                self.Trans_Adj[j].append(i)
 
 
     def DFS(self):
@@ -82,13 +67,8 @@ for _ in range(q):
         G.add_edge(u,v)
 
     # s=f.readline().strip()
-    print("Adjacency List:")
     G.printGraph()
-    print("Transposed Adjacency List:")
     G.DFS()
-    G.Transpose()
-    G.printTransposeGraph()
-    G.DFS
 f.close()
 
 

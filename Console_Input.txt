@@ -1,0 +1,11 @@
+1
+6 8
+u v
+u x
+v y
+x v
+w y
+w z
+y x
+z z
+u
