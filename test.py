@@ -1,108 +1,100 @@
+'''import sys
+sys.setrecursionlimit(10000000)'''
+
 class Graph:
-    def __init__(self, n, m):
-        self.n = n
-        self.m = m
+    def __init__(self):
         self.Adj = {}
-        self.Trans_Adj = {}
-        self.time = 0
-        self.color = {}
-        self.distance = {}
+        self.visited = {}   
+        self.count = 0
         self.parent = {}
-        self.queue = []
-        self.visit_time = {}
-        self.finish_time = {}
+        self.stack=[]
+        self.No_of_Nodes={}
 
     def add_edge(self,u,v):
         """Adds edge to the graph"""
         if u not in self.Adj:
-            self.Adj[u]=[]
-            self.Adj[u].append(v)
-        else: self.Adj[u].append(v)
+            self.Adj[u]=set()
+            self.Adj[u].add(v)
+        else: self.Adj[u].add(v)
 
-    def remove_edge(self,u,v):
-        """Remoces edge from the graph"""
-        self.Adj[u].remove(v)
 
     def printGraph(self):
         """Prints the Adjacency List representation of the graph"""
         for i in self.Adj:
             print(i,self.Adj[i],sep='-->')
 
-    def printTransposeGraph(self):
-        """Prints the Transpose of Adjacency List representation of the graph"""
-        for i in self.Trans_Adj:
-            print(i,self.Trans_Adj[i],sep='-->')
 
     def Transpose(self):
         """Transpose of a Graph (Adjacency list Representation)"""
+        g=Graph()
         for i in self.Adj:
-            self.Trans_Adj[i]=[]
+            g.Adj[i]=[]
 
         for i in self.Adj:
             for j in self.Adj[i]:
-                self.Trans_Adj[j].append(i)
+                if j in g.Adj:
+                    g.Adj[j].append(i)
+                else:
+                    g.Adj[j]=[]
+                    g.Adj[j].append(i)
+        return g
 
-
-    def DFS(self):
-        """Depth First Search of a graph """
-        for u in self.Adj:
-            self.color[u] = 'white'
-            self.parent[u]=None
-        for u in self.Adj:
-            if self.color[u] == 'white':
-                self.DFS_VISIT(u)
-                # print(self.color)
-        print(self.parent)
-        print(self.color)
-        print(self.visit_time)
-        print(self.finish_time)
-
-    def DFS_VISIT(self,u):
-        self.time += 1
-        self.color[u]='grey'
-        self.visit_time[u]=self.time
+    def Order_Nodes(self,u):
+        self.visited[u] = True
         for v in self.Adj[u]:
-            if self.color[v] == 'white':
-                self.color[v]='grey'
-                self.parent[v]=u
-                self.DFS_VISIT(v)
-        self.color[u]='black'
-        self.time += 1
-        self.finish_time[u]=self.time
+            if self.visited[v] == False:
+                self.Order_Nodes(v)
+        self.stack.insert(0,u)
 
+    def DFS_VISIT(self,s,u):
+        self.visited[u] = True
+        for v in self.Adj[u]:
+            if self.visited[v] == False:
+                self.No_of_Nodes[s] += 1
+                self.DFS_VISIT(s,v)
 
-f=open('Console_Input.txt','r')
+    
+f=open('SCC.txt','r')
+arr=f.readlines()
+G=Graph()
+vertices=set()
 
-q=int(f.readline().strip())
-for _ in range(q):
-    n,m=tuple(map(int,f.readline().strip().split()))
-    G=Graph(n,m)
-    for i in range(m):
-        u,v=tuple(f.readline().strip().split())
-        G.add_edge(u,v)
+for i in arr:
+    u,v=tuple(i.strip().split())
+    vertices.add(u)
+    vertices.add(v)
+    
+for i in vertices:
+    G.Adj[i]=set()
 
-    # s=f.readline().strip()
-    print("Adjacency List:")
-    G.printGraph()
-    print("Transposed Adjacency List:")
-    G.DFS()
-    G.Transpose()
-    G.printTransposeGraph()
-    G.DFS
-f.close()
+for i in arr:
+    u,v=tuple(i.strip().split())
+    G.add_edge(u,v)
 
+#print(G.printGraph())
+#print('\nTranspose')
+GT=G.Transpose()
+#print(GT.printGraph())
 
-"""
-Example DFS:
+#DFS on G_Transpose
+for i in GT.Adj:
+    GT.visited[i] = False
 
-u-->['v', 'x']
-w-->['y', 'z']
-x-->['v']
-v-->['y']
-z-->['z']
-y-->['x']
-{'u': None, 'w': None, 'v': 'u', 'x': 'y', 'y': 'v', 'z': 'w'}
-{'u': 'black', 'w': 'black', 'v': 'black', 'x': 'black', 'y': 'black', 'z': 'black'}
-{'u': 1, 'w': 9, 'x': 4, 'v': 2, 'z': 10, 'y': 3}
-{'u': 8, 'w': 12, 'v': 7, 'x': 5, 'z': 11, 'y': 6}
-"""
+for i in GT.Adj:
+    if GT.visited[i] == False:
+        GT.Order_Nodes(i)
+
+#print(GT.stack)
+
+for i in G.Adj:
+    G.visited[i] = False
+    
+for i in GT.stack:
+    if G.visited[i] == False:
+        G.No_of_Nodes[i] = 1
+        G.DFS_VISIT(i,i)
+        G.count += 1
+
+print("The no. of SCC: ",G.count)
+for i in G.No_of_Nodes:
+    print(i,G.No_of_Nodes[i],sep=':')
