@@ -1,5 +1,5 @@
-f=open('Console_Input.txt','r')
-q=f.read().strip().split('\n')
+f = open('Console_Input.txt','r')
+q = f.read().strip().split('\n')
 print('No. of lines: ',len(q))
 # print(q)
 count = 0

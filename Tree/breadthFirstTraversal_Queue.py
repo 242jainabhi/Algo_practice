@@ -1,5 +1,7 @@
-from tree import *
+# from tree import *
 
+'''
+#To print whole tree in one line
 def printBFS(root):
     if root == None:
         return
@@ -7,14 +9,13 @@ def printBFS(root):
     Queue.append(root)
     while len(Queue) != 0:
         x = Queue.pop(0)
-        if x == None:
-            break
         print(x.data,end=' ')
-        Queue.append(x.left)
-        Queue.append(x.right)
+        if x.left is not None: Queue.append(x.left)
+        if x.right is not None: Queue.append(x.right)
+'''
+# printBFS(root)
 
-
-"""  To print level by level
+#  To print level by level
 def printBFS(root):
     if root == None:
         return
@@ -24,14 +25,12 @@ def printBFS(root):
         size = len(Queue)
         if size == 0:
             break
-        while size != 0:
+        while size > 0:
             x = Queue.pop(0)
-            if x == None:
-                break
             print(x.data,end=' ')
-            Queue.append(x.left)
-            Queue.append(x.right)
+            if x.left != None: Queue.append(x.left)
+            if x.right != None: Queue.append(x.right)
             size -= 1
         print()
-"""
-printBFS(root)
+
+
