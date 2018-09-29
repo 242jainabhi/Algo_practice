@@ -36,6 +36,13 @@ class MinHeap():
             self.heap[i], self.heap[self.parent(i)] = self.heap[self.parent(i)], self.heap[i]
             i = self.parent(i)
 
+    def delete(self, x):
+        i = self.heap.index(x)
+        self.heap[i], self.heap[-1] = self.heap[-1], self.heap[i]
+        self.heap.pop()
+        self.heap_size -= 1
+        self.min_heapify(i)
+
     def get_min(self):
         self.build_min_heap()
         return self.heap[0]
@@ -53,5 +60,6 @@ if __name__ == "__main__":
     A = [4, 1, 3, 2, 16, 9, 10, 8, 14, 7]
     h = MinHeap(A)
     h.build_min_heap()
-    print('Min Heap: ', h.heap)
-    print(h.get_min())
+    print(h.heap)
+    h.delete(2)
+    print(h.heap)

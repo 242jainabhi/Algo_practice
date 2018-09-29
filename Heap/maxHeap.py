@@ -36,6 +36,13 @@ class MaxHeap():
             self.heap[i], self.heap[self.parent(i)] = self.heap[self.parent(i)], self.heap[i]
             i = self.parent(i)
 
+    def delete(self, x):
+        i = self.heap.index(x)
+        self.heap[i], self.heap[-1] = self.heap[-1], self.heap[i]
+        self.heap.pop()
+        self.heap_size -= 1
+        self.max_heapify(i)
+
     def get_max(self):
         self.build_max_heap()
         return self.heap[0]
@@ -52,6 +59,7 @@ class MaxHeap():
 if __name__ == "__main__":
     A = [4, 1, 3, 2, 16, 9, 10, 8, 14, 7]
     h = MaxHeap(A)
-    h.insert(100)
-    print(h.get_max())
+    h.build_max_heap()
+    print(h.heap)
+    h.delete(14)
     print(h.heap)
