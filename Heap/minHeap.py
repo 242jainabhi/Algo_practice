@@ -1,4 +1,4 @@
-class MaxHeap():
+class MinHeap():
     def __init__(self, arr):
         self.heap = arr
         self.heap_size = len(self.heap)
@@ -12,46 +12,46 @@ class MaxHeap():
     def right_child(self, i):
         return 2*i+2
 
-    def max_heapify(self, i):
+    def min_heapify(self, i):
         l = self.left_child(i)
         r = self.right_child(i)
-        if l < self.heap_size and self.heap[l] > self.heap[i]:
+        if l < self.heap_size and self.heap[l] < self.heap[i]:
             largest = l
         else:
             largest = i
-        if r < self.heap_size and self.heap[r] > self.heap[largest]:
+        if r < self.heap_size and self.heap[r] < self.heap[largest]:
             largest = r
         if largest != i:
             self.heap[i], self.heap[largest] = self.heap[largest], self.heap[i]
-            self.max_heapify(largest)
+            self.min_heapify(largest)
 
-    def build_max_heap(self):
+    def build_min_heap(self):
         for i in range(self.heap_size//2, -1, -1):
-            self.max_heapify(i)
+            self.min_heapify(i)
 
     def insert(self, x):
         i = self.heap_size
         self.heap.insert(i, x)
-        while i != 0 and self.heap[i] > self.heap[self.parent(i)]:
+        while i != 0 and self.heap[i] < self.heap[self.parent(i)]:
             self.heap[i], self.heap[self.parent(i)] = self.heap[self.parent(i)], self.heap[i]
             i = self.parent(i)
 
-    def get_max(self):
-        self.build_max_heap()
+    def get_min(self):
+        self.build_min_heap()
         return self.heap[0]
 
-    def extract_max(self):
-        self.build_max_heap()
-        max = self.heap[0]
+    def extract_min(self):
+        self.build_min_heap()
+        min = self.heap[0]
         self.heap[0] = self.heap[-1]
         self.heap.pop()
-        self.max_heapify(0)
+        self.min_heapify(0)
         self.heap_size -= 1
-        return max
+        return min
 
 if __name__ == "__main__":
     A = [4, 1, 3, 2, 16, 9, 10, 8, 14, 7]
-    h = MaxHeap(A)
-    h.insert(100)
-    print(h.get_max())
-    print(h.heap)
+    h = MinHeap(A)
+    h.build_min_heap()
+    print('Min Heap: ', h.heap)
+    print(h.get_min())
